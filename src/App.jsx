@@ -1,10 +1,11 @@
-import React, { useEffect, useReducer } from 'react'
+import React, { Fragment, useEffect, useReducer } from 'react'
 import Header from './components/Header';
 import Main from './components/Main';
 import Loader from './components/Loader';
 import Error from './components/Error';
 import StartScreen from './components/StartScreen';
 import Question from './components/Question';
+import NextButton from './components/NextButton';
 
 const initialState = {
   questions: [],
@@ -41,6 +42,12 @@ const reducer = (state, action) => {
           ? state.points+ question.points
           : state.points
       };
+    case 'nextQuestion':
+      return {
+        ... state, 
+        index: state.index+1,
+        answer: null
+      };
     default:
       throw new Error("Action unknown")
   }
@@ -75,10 +82,13 @@ const App = () => {
         }
 
         { status === 'active' && 
-          <Question 
-            question={questions[index]}
-            dispatch={dispatch} answer={answer}
-          /> 
+          <Fragment>
+            <Question 
+              question={questions[index]}
+              dispatch={dispatch} answer={answer}
+            />
+            <NextButton dispatch={dispatch} answer={answer} />
+          </Fragment>
         }
       </Main>
     </div>
