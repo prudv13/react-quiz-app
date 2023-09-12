@@ -6,6 +6,7 @@ import Error from './components/Error';
 import StartScreen from './components/StartScreen';
 import Question from './components/Question';
 import NextButton from './components/NextButton';
+import Progress from './components/Progress';
 
 const initialState = {
   questions: [],
@@ -57,9 +58,10 @@ const App = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const {questions, status, index, answer} = state;
+  const {questions, status, index, answer, points} = state;
 
   const numQuestions = questions.length;
+  const maxPossiblePoints = questions.reduce((prev, cur) => prev+cur.points, 0)
 
   useEffect(() => {
     fetch("https://questions-3xli.onrender.com/questions")
@@ -83,11 +85,22 @@ const App = () => {
 
         { status === 'active' && 
           <Fragment>
+            <Progress 
+              numQuestions={numQuestions} 
+              index={index}
+              points={points}
+              maxPossiblePoints={maxPossiblePoints}
+              answer={answer}
+            />
             <Question 
               question={questions[index]}
-              dispatch={dispatch} answer={answer}
+              dispatch={dispatch} 
+              answer={answer}
             />
-            <NextButton dispatch={dispatch} answer={answer} />
+            <NextButton 
+              dispatch={dispatch} 
+              answer={answer} 
+            />
           </Fragment>
         }
       </Main>
