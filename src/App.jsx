@@ -91,7 +91,7 @@ const App = () => {
   const maxPossiblePoints = questions.reduce((prev, cur) => prev+cur.points, 0)
 
   useEffect(() => {
-    fetch("https://questions-3xli.onrender.com/questions")
+    fetch("https://apidata-zkgz.onrender.com/questions")
     .then(res => res.json())
     .then(data => dispatch({type: 'dataReceived', payload: data}))
     .catch(err => dispatch({type: 'dataFailed'}));
